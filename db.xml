@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+    <table>
+        <name>search</name>
+        <column>
+            <name>class</name>
+            <type>text</type>
+            <null>NO</null>
+        </column>
+        <column>
+            <name>element_id</name>
+            <type>int</type>
+            <null>NO</null>
+        </column>
+        <column>
+            <name>version</name>
+            <type>char(13)</type>
+            <null>NO</null>
+        </column>
+        <column>
+            <name>content</name>
+            <type>text</type>
+            <null>NO</null>
+        </column>
+        <column>
+            <name>link</name>
+            <type>text</type>
+            <null>YES</null>
+        </column>
+        <column>
+            <name>name</name>
+            <type>text</type>
+            <null>YES</null>
+        </column>
+        <index>
+            <type>PRIMARY</type>
+            <element size="128">class</element>
+            <element>element_id</element>
+            <element>version</element>
+        </index>
+        <index>
+            <type>FULLTEXT</type>
+            <element>content</element>
+        </index>
+    </table>
+</root>
