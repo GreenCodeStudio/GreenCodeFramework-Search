@@ -32,12 +32,27 @@
             <type>text</type>
             <null>YES</null>
         </column>
-        <index>
-            <type>PRIMARY</type>
-            <element size="128">class</element>
-            <element>element_id</element>
-            <element>version</element>
-        </index>
+        <column>
+            <name>permission_group</name>
+            <type>text</type>
+            <null>YES</null>
+        </column>
+        <column>
+            <name>permission_name</name>
+            <type>text</type>
+            <null>YES</null>
+        </column>
+        <column>
+            <name>id_user</name>
+            <type>int</type>
+            <null>YES</null>
+        </column>
+<!--        <index>-->
+<!--            <type>PRIMARY</type>-->
+<!--            <element size="128">class</element>-->
+<!--            <element>element_id</element>-->
+<!--            <element>version</element>-->
+<!--        </index>-->
         <index>
             <type>FULLTEXT</type>
             <element>content</element>

@@ -3,7 +3,7 @@
 namespace Search;
 
 use ReflectionClass;
-use World\Repository\SearchRepository;
+use Search\Repository\SearchRepository;
 
 class Search
 {
@@ -67,5 +67,8 @@ class Search
             }
         }
         return $ret;
+    }
+    function searchAll(string $query, ?int $idUser){
+       return (new SearchRepository())->searchAll($query, $idUser);
     }
 }

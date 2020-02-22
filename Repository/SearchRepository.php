@@ -1,6 +1,6 @@
 <?php
 
-namespace World\Repository;
+namespace Search\Repository;
 
 use Core\DB;
 
@@ -22,6 +22,13 @@ class SearchRepository extends \Core\Repository
     {
         DB::insertMultiple('search', $data);
         DB::query("DELETE FROM search WHERE version != ?", [$version]);
+    }
+
+    public function searchAll(string $query, ?int $idUser)
+    {
+        return DB::get("SELECT class, name, element_id, link, permission_group, permission_name
+                                FROM search
+                                WHERE MATCH (content) AGAINST (?) AND (id_user is null OR id_user = ?)", [$query, $idUser]);
     }
 
 }
