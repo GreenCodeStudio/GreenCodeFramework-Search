@@ -58,4 +58,27 @@
             <element>content</element>
         </index>
     </table>
+    <table>
+    <name>search_word</name>
+        <column>
+            <name>word</name>
+            <type>varchar(64)</type>
+            <null>NO</null>
+        </column>
+        <column>
+            <name>class</name>
+            <type>text</type>
+            <null>NO</null>
+        </column>
+        <column>
+            <name>element_id</name>
+            <type>int</type>
+            <null>NO</null>
+        </column>
+        <column>
+            <name>version</name>
+            <type>char(13)</type>
+            <null>NO</null>
+        </column>
+    </table>
 </root>

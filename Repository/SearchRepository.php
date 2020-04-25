@@ -18,9 +18,10 @@ class SearchRepository extends \Core\Repository
         return 'search';
     }
 
-    public function replace($data, $version)
+    public function replace($data,$words, $version)
     {
         DB::insertMultiple('search', $data);
+        DB::insertMultiple('search_word', $words);
         DB::query("DELETE FROM search WHERE version != ?", [$version]);
     }
 

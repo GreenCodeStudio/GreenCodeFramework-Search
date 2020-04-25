@@ -10,6 +10,7 @@ class Search
     public function generateSearchIndex()
     {
         $items = [];
+        $words = [];
         $version = uniqid();
         $classes = $this->getISearchableClasses();
         foreach ($classes as $className) {
@@ -19,10 +20,12 @@ class Search
                 $item->class = $className;
                 $item->version = $version;
                 $items[] = $item;
+                foreach (explode($item->content, ' ') as $word)
+                    $words[] = ['word' => $word, 'class'=>$className, 'version'=>$version, 'element_id'=>$item->element_id];
             }
         }
         $repository = new SearchRepository();
-        $repository->replace($items, $version);
+        $repository->replace($items,$words, $version);
     }
 
     function getISearchableClasses()
@@ -68,7 +71,9 @@ class Search
         }
         return $ret;
     }
-    function searchAll(string $query, ?int $idUser){
-       return (new SearchRepository())->searchAll($query, $idUser);
+
+    function searchAll(string $query, ?int $idUser)
+    {
+        return (new SearchRepository())->searchAll($query, $idUser);
     }
 }
