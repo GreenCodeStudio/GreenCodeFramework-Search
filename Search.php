@@ -2,6 +2,7 @@
 
 namespace Search;
 
+use Ramsey\Uuid\Uuid;
 use ReflectionClass;
 use Search\Repository\SearchRepository;
 
@@ -17,11 +18,12 @@ class Search
             $object = new $className();
             $classItems = $object->getAllElementsToSearch();
             foreach ($classItems as $item) {
+                $item->uuid = Uuid::uuid4();
                 $item->class = $className;
                 $item->version = $version;
                 $items[] = $item;
-                foreach (explode($item->content, ' ') as $word)
-                    $words[] = ['word' => $word, 'class'=>$className, 'version'=>$version, 'element_id'=>$item->element_id];
+                foreach (explode(' ', $item->content) as $word)
+                    $words[] = ['word' => $word, 'uuid_search'=>$item->uuid];
             }
         }
         $repository = new SearchRepository();

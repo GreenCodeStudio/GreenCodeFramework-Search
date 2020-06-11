@@ -3,6 +3,11 @@
     <table>
         <name>search</name>
         <column>
+            <name>uuid</name>
+            <type>char(36)</type>
+            <null>NO</null>
+        </column>
+        <column>
             <name>class</name>
             <type>text</type>
             <null>NO</null>
@@ -47,15 +52,13 @@
             <type>int</type>
             <null>YES</null>
         </column>
-<!--        <index>-->
-<!--            <type>PRIMARY</type>-->
-<!--            <element size="128">class</element>-->
-<!--            <element>element_id</element>-->
-<!--            <element>version</element>-->
-<!--        </index>-->
         <index>
-            <type>FULLTEXT</type>
-            <element>content</element>
+            <type>PRIMARY</type>
+            <element>uuid</element>
+        </index>
+        <index>
+            <type>INDEX</type>
+            <element>version</element>
         </index>
     </table>
     <table>
@@ -66,19 +69,20 @@
             <null>NO</null>
         </column>
         <column>
-            <name>class</name>
-            <type>text</type>
+            <name>uuid_search</name>
+            <type>char(36)</type>
             <null>NO</null>
         </column>
-        <column>
-            <name>element_id</name>
-            <type>int</type>
-            <null>NO</null>
-        </column>
-        <column>
-            <name>version</name>
-            <type>char(13)</type>
-            <null>NO</null>
-        </column>
+        <index>
+            <type>INDEX</type>
+            <element>word</element>
+        </index>
+        <index>
+            <type>FOREIGN</type>
+            <element>uuid_search</element>
+            <reference name="search">
+                <element>uuid</element>
+            </reference>
+        </index>
     </table>
 </root>
