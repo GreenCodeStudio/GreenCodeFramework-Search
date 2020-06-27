@@ -2,7 +2,7 @@
 
 namespace Search\Repository;
 
-use Core\DB;
+use Core\Database\DB;
 use MKrawczyk\FunQuery\FunQuery;
 
 
