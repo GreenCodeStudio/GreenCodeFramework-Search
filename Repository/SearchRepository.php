@@ -23,6 +23,7 @@ class SearchRepository extends \Core\Repository
     {
         DB::insertMultiple('search', $data);
         DB::insertMultiple('search_word', $words);
+        DB::query("DELETE FROM search_word WHERE (SELECT version FROM search WHERE search.uuid = search_word.uuid_search) != ?", [$version]);
         DB::query("DELETE FROM search WHERE version != ?", [$version]);
     }
 
