@@ -27,7 +27,7 @@ class SearchRepository extends \Core\Repository
         DB::query("DELETE FROM search WHERE version != ?", [$version]);
     }
 
-    public function searchAll(string $query, ?int $idUser)
+    public function searchAll(string $query, ?int $idUser, int $limit=1000)
     {
         list($joinSql, $parameters) = $this->generateSearchSql($query);
         $parameters[] = $idUser;
@@ -35,7 +35,7 @@ class SearchRepository extends \Core\Repository
                                 FROM search
                                 $joinSql
                                 WHERE id_user is null OR id_user = ?
-                                LIMIT 20", $parameters);
+                                LIMIT $limit", $parameters);
     }
 
     private function generateSearchSql($query)

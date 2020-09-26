@@ -74,8 +74,8 @@ class Search
         return $ret;
     }
 
-    function searchAll(string $query, ?int $idUser)
+    function searchAll(string $query, ?int $idUser, int $limit=1000)
     {
-        return (new SearchRepository())->searchAll($query, $idUser);
+        return (new SearchRepository())->searchAll($query, $idUser, $limit);
     }
 }
