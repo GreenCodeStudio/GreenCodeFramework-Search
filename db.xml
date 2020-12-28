@@ -78,6 +78,10 @@
             <element>word</element>
         </index>
         <index>
+            <type>INDEX</type>
+            <element>uuid_search</element>
+        </index>
+        <index>
             <type>FOREIGN</type>
             <element>uuid_search</element>
             <reference name="search">
