@@ -2,6 +2,7 @@
 
 namespace Search;
 
+use MKrawczyk\FunQuery\FunQuery;
 use Ramsey\Uuid\Uuid;
 use ReflectionClass;
 use Search\Repository\SearchRepository;
@@ -23,11 +24,11 @@ class Search
                 $item->version = $version;
                 $items[] = $item;
                 foreach (explode(' ', $item->content) as $word)
-                    $words[] = ['word' => $word, 'uuid_search'=>$item->uuid];
+                    $words[] = ['word' => $word, 'uuid_search' => $item->uuid];
             }
         }
         $repository = new SearchRepository();
-        $repository->replace($items,$words, $version);
+        $repository->replace($items, $words, $version);
     }
 
     function getISearchableClasses()
@@ -48,12 +49,12 @@ class Search
 
     function getAllRepositoryPhpFiles()
     {
-        $modules = scandir(__DIR__."/..");
+        $modules = scandir(__DIR__ . "/..");
         $ret = [];
         foreach ($modules as $module) {
             if ($module == '.' || $module == '..') continue;
-            if (is_dir(__DIR__."/../".$module."/Repository"))
-                $ret = array_merge($ret, $this->getAllPhpFiles(__DIR__."/../".$module."/Repository"));
+            if (is_dir(__DIR__ . "/../" . $module . "/Repository"))
+                $ret = array_merge($ret, $this->getAllPhpFiles(__DIR__ . "/../" . $module . "/Repository"));
         }
 
         return $ret;
@@ -65,17 +66,36 @@ class Search
         $ret = [];
         foreach ($elements as $element) {
             if ($element == '.' || $element == '..') continue;
-            if (is_dir($path.'/'.$element))
-                $ret = array_merge($ret, $this->getAllPhpFiles($path.'/'.$element));
+            if (is_dir($path . '/' . $element))
+                $ret = array_merge($ret, $this->getAllPhpFiles($path . '/' . $element));
             else if (substr($element, -4) === ".php") {
-                $ret[] = $path.'/'.$element;
+                $ret[] = $path . '/' . $element;
             }
         }
         return $ret;
     }
 
-    function searchAll(string $query, ?int $idUser, int $limit=1000)
+    function searchAll(string $query, ?int $idUser, int $limit = 1000, callable $filter)
     {
-        return (new SearchRepository())->searchAll($query, $idUser, $limit);
+        return FunQuery::create((new SearchRepository())->searchAll($query, $idUser, $limit))->filter($filter);
+    }
+
+    function searchAllGrouped(string $query, ?int $idUser, int $limit = 1000, callable $filter)
+    {
+        $results = $this->searchAll($query, $idUser, $limit = 1000, $filter);
+        $resultsGrouped = [];
+        foreach ($results as $result) {
+            $resultsGrouped[$result->class][] = $result;
+        }
+        $ret = [];
+        foreach ($resultsGrouped as $className => $group) {
+            try {
+                $name = $className::getSearchName();
+            } catch (\Throwable $ex) {
+                $name = '';
+            }
+            $ret[] = (object)['name' => $name, 'items' => $group];
+        }
+        return $ret;
     }
 }

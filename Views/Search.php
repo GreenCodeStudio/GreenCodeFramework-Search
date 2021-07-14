@@ -7,14 +7,19 @@
             <input type="search" value="<?= htmlspecialchars($data['query']) ?>">
         </form>
         <div>
-            <?php foreach ($data['results'] as $result) {
+            <?php foreach ($data['results'] as $g) {
                 ?>
-                <a href="<?= htmlspecialchars($result->link) ?>">
-                    <div>
-                        <?= htmlspecialchars($result->name) ?>
-                    </div>
-                </a>
+                <h2><?= htmlspecialchars($g->name) ?></h2>
                 <?php
+                foreach ($g->items as $result) {
+                    ?>
+                    <a href="<?= htmlspecialchars($result->link) ?>">
+                        <div>
+                            <?= htmlspecialchars($result->name) ?>
+                        </div>
+                    </a>
+                    <?php
+                }
             } ?>
         </div>
     </section>
