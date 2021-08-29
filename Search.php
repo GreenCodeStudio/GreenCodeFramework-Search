@@ -24,7 +24,7 @@ class Search
                 $item->version = $version;
                 $items[] = $item;
                 foreach (explode(' ', $item->content) as $word)
-                    $words[] = ['word' => $word, 'uuid_search' => $item->uuid];
+                    $words[] = ['word' => substr($word,0,63), 'uuid_search' => $item->uuid];
             }
         }
         $repository = new SearchRepository();
