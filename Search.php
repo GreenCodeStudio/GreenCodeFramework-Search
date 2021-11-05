@@ -2,6 +2,7 @@
 
 namespace Search;
 
+use Core\Log;
 use MKrawczyk\FunQuery\FunQuery;
 use Ramsey\Uuid\Uuid;
 use ReflectionClass;
@@ -16,15 +17,19 @@ class Search
         $version = uniqid();
         $classes = $this->getISearchableClasses();
         foreach ($classes as $className) {
-            $object = new $className();
-            $classItems = $object->getAllElementsToSearch();
-            foreach ($classItems as $item) {
-                $item->uuid = Uuid::uuid4();
-                $item->class = $className;
-                $item->version = $version;
-                $items[] = $item;
-                foreach (explode(' ', $item->content) as $word)
-                    $words[] = ['word' => substr($word,0,32), 'uuid_search' => $item->uuid];
+            try {
+                $object = new $className();
+                $classItems = $object->getAllElementsToSearch();
+                foreach ($classItems as $item) {
+                    $item->uuid = Uuid::uuid4();
+                    $item->class = $className;
+                    $item->version = $version;
+                    $items[] = $item;
+                    foreach (explode(' ', $item->content) as $word)
+                        $words[] = ['word' => substr($word, 0, 32), 'uuid_search' => $item->uuid];
+                }
+            }catch(\Throwable $ex){
+                Log::Exception($ex);
             }
         }
         $repository = new SearchRepository();
@@ -33,11 +38,13 @@ class Search
 
     function getISearchableClasses()
     {
+        include_once __DIR__.'/Actions.php';
         $files = $this->getAllRepositoryPhpFiles();
         foreach ($files as $file) {
             include_once $file;
         }
         $classes = get_declared_classes();
+        dump($classes);
         $implementsISearchable = [];
         foreach ($classes as $className) {
             $reflect = new ReflectionClass($className);

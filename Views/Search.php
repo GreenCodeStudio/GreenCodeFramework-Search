@@ -6,7 +6,7 @@
         <form>
             <input type="search" value="<?= htmlspecialchars($data['query']) ?>">
         </form>
-        <div>
+        <div class="searchResults">
             <?php foreach ($data['results'] as $g) {
                 ?>
                 <h2><?= htmlspecialchars($g->name) ?></h2>
