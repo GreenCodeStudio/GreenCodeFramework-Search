@@ -53,7 +53,8 @@ class Actions implements ISearchable
             'name' => $x->title ?? '',
             'link' => $x->link,
             'permission_group' => $x->permission->group ?? null,
-            'permission_name' => $x->permission->name ?? null
+            'permission_name' => $x->permission->name ?? null,
+            'element_id'=>0
         ])->toArray();
     }
 
