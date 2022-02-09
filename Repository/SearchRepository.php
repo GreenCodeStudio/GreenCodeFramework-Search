@@ -31,7 +31,7 @@ class SearchRepository extends \Core\Repository
     {
         list($joinSql, $parameters) = $this->generateSearchSql($query);
         $parameters[] = $idUser;
-        return DB::get("SELECT class, name, element_id, link, permission_group, permission_name
+        return DB::get("SELECT DISTINCT class, name, element_id, link, permission_group, permission_name
                                 FROM search
                                 $joinSql
                                 WHERE id_user is null OR id_user = ?
