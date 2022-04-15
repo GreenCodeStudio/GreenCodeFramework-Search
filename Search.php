@@ -82,14 +82,14 @@ class Search
         return $ret;
     }
 
-    function searchAll(string $query, ?int $idUser, int $limit = 1000, callable $filter)
+    function searchAll(string $query, ?int $idUser, int $limit = 1000, callable $filter=null)
     {
         return FunQuery::create((new SearchRepository())->searchAll($query, $idUser, $limit))->filter($filter);
     }
 
-    function searchAllGrouped(string $query, ?int $idUser, int $limit = 1000, callable $filter)
+    function searchAllGrouped(string $query, ?int $idUser, int $limit = 1000, callable $filter=null)
     {
-        $results = $this->searchAll($query, $idUser, $limit = 1000, $filter);
+        $results = $this->searchAll($query, $idUser, $limit, $filter);
         $resultsGrouped = [];
         foreach ($results as $result) {
             $resultsGrouped[$result->class][] = $result;
@@ -104,5 +104,27 @@ class Search
             $ret[] = (object)['name' => $name, 'items' => $group];
         }
         return $ret;
+    }
+
+    public function generateOpenSearchDescription($title)
+    {
+        $root=new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/"/>');
+        $root->ShortName=$title;
+        $root->Description=$title;
+        $root->InputEncoding='UTF-8';
+        $root->Url='';
+        $root->Url->addAttribute('type','text/html');
+        $root->Url->addAttribute('method','get');
+        $root->Url->addAttribute('template',"https://$_SERVER[HTTP_HOST]/Search/index/{searchTerms}");
+
+        $root->Url[]='';
+        $root->Url[1]->addAttribute('type','application/opensearchdescription+xml');
+        $root->Url[1]->addAttribute('rel','self');
+        $root->Url[1]->addAttribute('template',"https://$_SERVER[HTTP_HOST]/Search/openSearchDescription");
+        $root->Image="https://$_SERVER[HTTP_HOST]/dist/Common/icon.png";
+        $root->Image->addAttribute('width','512');
+        $root->Image->addAttribute('height','512');
+        $root->Image->addAttribute('type','image/png');
+        return $root;
     }
 }
