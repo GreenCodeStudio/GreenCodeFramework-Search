@@ -18,8 +18,8 @@ class Search extends PageStandardController
 
     public function openSearchDescription()
     {
-        //header('content-type: application/opensearchdescription+xml;chasrset=UTF-8');
-        header('content-type: application/xml;chasrset=UTF-8');
+        header('content-type: application/opensearchdescription+xml;chasrset=UTF-8');
+        //header('content-type: application/xml;chasrset=UTF-8');
         echo (new \Search\Search())->generateOpenSearchDescription($this->getTitle())->saveXML();
         exit;
     }
