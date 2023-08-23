@@ -21,7 +21,7 @@ class Search
                 $object = new $className();
                 $classItems = $object->getAllElementsToSearch();
                 foreach ($classItems as $item) {
-                    $item->uuid = Uuid::uuid4();
+                    $item->uuid = Uuid::uuid4()->toString();
                     $item->class = $className;
                     $item->version = $version;
                     $items[] = $item;
