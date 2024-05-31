@@ -1,6 +1,6 @@
 {
     "require": {
-        "mkrawczyk/funquery": "^v1.7.0",
-        "ramsey/uuid": "4.0.1"
+        "mkrawczyk/funquery": "^v1.14.1",
+        "ramsey/uuid": "^4.7.6"
     }
 }
