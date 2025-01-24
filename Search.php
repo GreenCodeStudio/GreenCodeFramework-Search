@@ -44,7 +44,6 @@ class Search
             include_once $file;
         }
         $classes = get_declared_classes();
-        dump($classes);
         $implementsISearchable = [];
         foreach ($classes as $className) {
             $reflect = new ReflectionClass($className);
